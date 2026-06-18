@@ -1,0 +1,131 @@
+<%- include('partials/header') %>
+
+<div class="container py-5">
+    <div class="row justify-content-center reveal">
+        <div class="col-lg-6">
+            <div class="glass-card tilt-card">
+                <h3 class="text-center mb-4 text-gradient fw-bold" style="font-family:'Poppins',sans-serif;">
+                    <i class="fa-solid fa-user-plus me-2"></i>Register
+                </h3>
+                <form id="registerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-light small fw-bold">Full Name</label>
+                            <input type="text" class="form-control glass-input" id="name" placeholder="John Doe" required>
+                            <div class="invalid-feedback" id="nameErr"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-light small fw-bold">Phone Number</label>
+                            <input type="tel" class="form-control glass-input" id="phone" placeholder="+91 9876543210" required>
+                            <div class="invalid-feedback" id="phoneErr"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light small fw-bold">Email Address</label>
+                        <input type="email" class="form-control glass-input" id="email" placeholder="you@example.com" required>
+                        <div class="invalid-feedback" id="emailErr"></div>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label text-light small fw-bold">Password</label>
+                        <input type="password" class="form-control glass-input" id="password" placeholder="Min 8 chars, 1 Upper, 1 Number, 1 Special" required>
+                    </div>
+                    <!-- Password Strength Meter (Task 4) -->
+                    <div class="mb-1">
+                        <div class="strength-meter-bg"><div class="strength-meter" id="strength-meter"></div></div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <small class="text-white-50">Characters: <span id="char-count">0</span></small>
+                        <small id="strength-label" class="text-white-50">Strength: None</small>
+                    </div>
+                    <!-- Password Rules (Task 4) -->
+                    <div class="mb-4 small">
+                        <div id="rule-length" class="text-white-50"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> 8+ characters</div>
+                        <div id="rule-upper" class="text-white-50"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> 1 uppercase letter</div>
+                        <div id="rule-lower" class="text-white-50"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> 1 lowercase letter</div>
+                        <div id="rule-number" class="text-white-50"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> 1 number</div>
+                        <div id="rule-special" class="text-white-50"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> 1 special character</div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient w-100 py-2 fw-bold">Create Account</button>
+                    <div id="registerMessage" class="mt-3 text-center"></div>
+                </form>
+                <div class="text-center mt-4">
+                    <span class="text-white-50 small">Already have an account? <a href="/login" class="text-info">Login</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Task 4: Dynamic Password Validation
+const passwordInput = document.getElementById('password');
+const strengthMeter = document.getElementById('strength-meter');
+const charCount = document.getElementById('char-count');
+const strengthLabel = document.getElementById('strength-label');
+
+const rules = {
+    length: { el: document.getElementById('rule-length'), test: v => v.length >= 8 },
+    upper: { el: document.getElementById('rule-upper'), test: v => /[A-Z]/.test(v) },
+    lower: { el: document.getElementById('rule-lower'), test: v => /[a-z]/.test(v) },
+    number: { el: document.getElementById('rule-number'), test: v => /[0-9]/.test(v) },
+    special: { el: document.getElementById('rule-special'), test: v => /[^A-Za-z0-9]/.test(v) }
+};
+
+passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+    charCount.innerText = val.length;
+
+    let strength = 0;
+    for (const key in rules) {
+        const passed = rules[key].test(val);
+        strength += passed ? 1 : 0;
+        rules[key].el.innerHTML = passed
+            ? `<i class="fa-solid fa-circle-check text-success me-1"></i> ${rules[key].el.textContent.trim()}`
+            : `<i class="fa-solid fa-circle-xmark text-danger me-1"></i> ${rules[key].el.textContent.trim()}`;
+    }
+
+    const pct = (strength / 5) * 100;
+    strengthMeter.style.width = pct + '%';
+    if (pct <= 20) { strengthMeter.className = 'strength-meter bg-danger'; strengthLabel.innerText = 'Strength: Very Weak'; }
+    else if (pct <= 40) { strengthMeter.className = 'strength-meter bg-warning'; strengthLabel.innerText = 'Strength: Weak'; }
+    else if (pct <= 60) { strengthMeter.className = 'strength-meter bg-info'; strengthLabel.innerText = 'Strength: Fair'; }
+    else if (pct <= 80) { strengthMeter.className = 'strength-meter bg-primary'; strengthLabel.innerText = 'Strength: Strong'; }
+    else { strengthMeter.className = 'strength-meter bg-success'; strengthLabel.innerText = 'Strength: Very Strong'; }
+});
+
+// Task 2: Client-side validation
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = passwordInput.value;
+    const msg = document.getElementById('registerMessage');
+    const btn = e.target.querySelector('button[type="submit"]');
+
+    if (!name) { msg.innerHTML = '<span class="text-warning">Name is required.</span>'; return; }
+    if (!/\S+@\S+\.\S+/.test(email)) { msg.innerHTML = '<span class="text-warning">Invalid email.</span>'; return; }
+    if (!/^\+?\d{7,15}$/.test(phone.replace(/\s/g, ''))) { msg.innerHTML = '<span class="text-warning">Invalid phone number.</span>'; return; }
+
+    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    if (!passRegex.test(password)) {
+        msg.innerHTML = '<span class="text-warning">Password does not meet all requirements.</span>';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating account...';
+
+    try {
+        await axios.post('/api/register', { name, email, phone, password });
+        msg.innerHTML = '<span class="text-success"><i class="fa-solid fa-check-circle me-1"></i>Registration successful! Redirecting...</span>';
+        setTimeout(() => window.location.href = '/dashboard', 800);
+    } catch (error) {
+        msg.innerHTML = `<span class="text-danger">${error.response?.data?.message || 'Registration failed'}</span>`;
+        btn.disabled = false;
+        btn.innerHTML = 'Create Account';
+    }
+});
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,95 @@
+<%- include('partials/header') %>
+
+<div class="container py-5">
+    <h2 class="text-center text-gradient fw-bold mb-5 reveal" style="font-family:'Poppins',sans-serif;">
+        <i class="fa-solid fa-map me-2"></i>Internship Tasks Roadmap
+    </h2>
+
+    <div class="row g-4">
+        <!-- Level 1 -->
+        <div class="col-md-6 reveal">
+            <div class="glass-card tilt-card h-100" style="border-left:4px solid var(--primary);">
+                <span class="badge bg-primary mb-3">Level 1 &middot; Beginner</span>
+                <h5 class="fw-bold">Task 1: HTML Structure & Server Interaction</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>Create HTML forms for user input</li>
+                    <li>Setup Node.js server using Express</li>
+                    <li>Create server endpoints (POST /register, /contact, /apply)</li>
+                    <li>Use EJS for dynamic HTML generation</li>
+                </ul>
+                <h5 class="fw-bold mt-3">Task 2: Inline Styles & Validation</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>Client-side validation (empty, email, phone, name)</li>
+                    <li>Server-side validation of all incoming data</li>
+                    <li>Temporary storage in array</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Level 2 -->
+        <div class="col-md-6 reveal" style="animation-delay:0.1s;">
+            <div class="glass-card tilt-card h-100" style="border-left:4px solid var(--secondary);">
+                <span class="badge" style="background:var(--secondary);">Level 2 &middot; Intermediate</span>
+                <h5 class="fw-bold mt-3">Task 3: Advanced CSS & Responsive Design</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>Multi-section layouts with Bootstrap Grid</li>
+                    <li>Glassmorphism, animations, transitions</li>
+                    <li>Responsive: Desktop, Tablet, Mobile</li>
+                </ul>
+                <h5 class="fw-bold mt-3">Task 4: Complex Validation & Dynamic DOM</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>Password strength meter with rules</li>
+                    <li>Live character counters</li>
+                    <li>Dynamic progress bars</li>
+                    <li>Real-time dashboard updates</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Level 3 -->
+        <div class="col-md-6 reveal" style="animation-delay:0.2s;">
+            <div class="glass-card tilt-card h-100" style="border-left:4px solid var(--accent);">
+                <span class="badge bg-info text-dark">Level 3 &middot; Advanced</span>
+                <h5 class="fw-bold mt-3">Task 5: REST API Integration</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>CRUD APIs: GET, POST, PUT, DELETE /api/users</li>
+                    <li>Dashboard with Create, Edit, Delete, Search, Sort, Pagination</li>
+                    <li>Frontend integration using Axios</li>
+                </ul>
+                <h5 class="fw-bold mt-3">Task 6: Database & Authentication</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>MongoDB collections: Users, Applications, Contacts</li>
+                    <li>JWT auth with bcrypt password hashing</li>
+                    <li>Protected routes: Dashboard, Profile, Settings</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Level 4 -->
+        <div class="col-md-6 reveal" style="animation-delay:0.3s;">
+            <div class="glass-card tilt-card h-100" style="border-left:4px solid #10B981;">
+                <span class="badge bg-success">Level 4 &middot; Expert</span>
+                <h5 class="fw-bold mt-3">Task 7: External API Integration</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>GitHub API: profile, repos, followers, following</li>
+                    <li>Rate limiting: 10 requests/minute</li>
+                    <li>Error handling: 404, 500, Invalid pages</li>
+                </ul>
+                <h5 class="fw-bold mt-3">Task 8: Advanced Server Functionality</h5>
+                <ul class="text-white-50 small mt-2">
+                    <li>Morgan, Body Parser, Auth, Error middleware</li>
+                    <li>Node-Cron: cleanup job every 1 minute</li>
+                    <li>Redis caching for dashboard data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Section (Task 3) -->
+    <h3 class="text-center text-gradient fw-bold mt-5 mb-4 reveal" style="font-family:'Poppins',sans-serif;">Skills You'll Learn</h3>
+    <div class="d-flex flex-wrap gap-2 justify-content-center reveal">
+        <% const skills = ['HTML','CSS','JavaScript','Bootstrap','Node.js','Express.js','EJS','REST APIs','MongoDB','MySQL','Authentication','Authorization','OAuth','Redis','Responsive Design','DOM Manipulation','Server Side Rendering','Git','GitHub']; %>
+        <% skills.forEach(skill => { %>
+            <span class="badge glass-chip"><%= skill %></span>
+        <% }); %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
